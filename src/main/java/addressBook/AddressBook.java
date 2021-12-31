@@ -4,13 +4,18 @@
  * Address Book
  */
 package addressBook;
+
+import java.util.ArrayList;
 import java.util.Scanner;
-//
+
+//Contact
 class Contact {
+    //instance variable declaration
     private String f_name, l_name, address, city, state, email;
     private int zip;
     long p_number;
 
+    //constructor
     Contact(String f_name, String l_name, String address, String city, String state, int zip, long p_number,
             String email) {
         this.f_name = f_name;
@@ -24,6 +29,7 @@ class Contact {
 
     }
 
+    //getters and setters
     public String getF_name() {
         return f_name;
     }
@@ -88,16 +94,54 @@ class Contact {
         return p_number;
     }
 
+    public String toString() {
+        return (" Name: " + this.getF_name() + " " + this.getL_name() + "\n Address: " + this.getAddress() + " ," +
+                this.getCity() + " ," + this.getState() + " ," + this.getZip() + "\n Contact: " + this.getP_number() +
+                "\n Email: " + this.getEmail());
+    }
+
 }
 
 
 public class AddressBook {
-    //main method
-    public static void main(String[] args) {
-        //welcome message
-        System.out.println("Welcome to Address Book Program!!!");
-        //initialize variable
-        Scanner sc=new Scanner(System.in);
+    //instance variable declaration
+    public static ArrayList<Contact> addressBook = new ArrayList<Contact>();
+    public static final Scanner sc = new Scanner(System.in);
+
+    /**
+     * method to print address book
+     * iterate through book if there is any contact
+     * print contact
+     */
+    public static void displayContact() {
+        if (addressBook.size() > 0) {
+            for (int i = 0; i < addressBook.size(); i++) {
+                System.out.println();
+                System.out.println(addressBook.get(i));
+            }
+        } else {
+            System.out.println("No Records Present.");
+        }
+    }
+
+    /**
+     * method displays menu
+     * return option chosen by user
+     */
+    public static int menu() {
+        System.out.println(
+                "Select an operation: \n1- To add contact to AddressBook \n2- To view AddressBook\n3- To quit");
+        return sc.nextInt();
+    }
+
+    /**
+     * method to add contact to Address Book
+     * takes input
+     * create contact
+     * add contact to Address Book
+     */
+    public static void addContact() {
+        //variable declaration
         String f_name, l_name, address, city, state, email;
         int zip;
         long p_number;
@@ -118,9 +162,30 @@ public class AddressBook {
         email = sc.next();
         System.out.println("Enter Phone Number");
         p_number = sc.nextLong();
-        //creating contact
         Contact contact = new Contact(f_name, l_name, address, city, state, zip, p_number, email);
-        //output
-        System.out.println("Contact Created!!!");
+        System.out.println("Contact created!!!"); //contact created
+        addressBook.add(contact);
+        System.out.println("User Added Successfully!!!");// contact added
+    }
+
+    //main method
+    public static void main(String[] args) {
+        //welcome message
+        System.out.println("Welcome to Address Book Program!!!");
+        //initialize variable
+        int option;
+        //functionality
+        while (true) {
+            option = menu(); // display menu
+            if (option == 1) {
+                addContact(); // add contact
+            } else if (option == 2) {
+                displayContact(); // display contact
+            } else if (option == 3) {
+                System.out.println("Thank You!!! "); // user quits
+                break;
+            } else
+                System.out.println("Invalid Input. Please enter a valid Input!!!! "); // invalid input
+        }
     }
 }

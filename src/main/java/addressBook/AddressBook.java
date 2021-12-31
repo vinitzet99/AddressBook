@@ -130,7 +130,7 @@ public class AddressBook {
      */
     public static int menu() {
         System.out.println(
-                "Select an operation: \n1- To add contact to AddressBook\n2- To edit contact from Address Book\n3- To view AddressBook\n4- To quit");
+                "Select an operation: \n1- To add contact to AddressBook\n2- To edit contact from Address Book\n3- To delete contact from AddressBook\n4- To view AddressBook\n5- To quit");
         return sc.nextInt();
     }
 
@@ -193,7 +193,7 @@ public class AddressBook {
                 }
             }
             if (flag == 1) {
-                switch (update) {
+                switch (update) { //update contact
                     case 1:
                         addressBook.get(i).setAddress(updateValue);
                         System.out.println("User Updated Successfully!!!");
@@ -229,6 +229,33 @@ public class AddressBook {
         }
     }
 
+    /**
+     * method to delete contact in Address Book
+     * takes First Name if Address Book is not empty
+     * search First Name
+     * delete contact if exists
+     */
+    public static void delContact() {
+        if (addressBook.size() > 0) { // if Address Book is not Empty
+            String name;
+            int i, flag = 0;
+            System.out.println("Enter first name of person you want to delete: ");
+            name = sc.next(); // input name to delete
+            for (i = 0; i < addressBook.size(); i++) {
+                if (addressBook.get(i).getF_name().equalsIgnoreCase(name)) {
+                    flag = 1;
+                    addressBook.remove(i); // delete contact
+                    System.out.println("User Deleted Successfully!!!");
+                    break;
+                }
+            }
+            if (flag == 0) {
+                System.out.println("Cannot Find First Name!!!");
+            }
+        } else {
+            System.out.println("No Records Present. Please add contact to use this functionality");
+        }
+    }
     //main method
     public static void main(String[] args) {
         //welcome message
@@ -243,8 +270,10 @@ public class AddressBook {
             } else if (option == 2) {
                 editContact(); // edit contact
             } else if (option == 3) {
-                displayContact(); // display contact
+                delContact(); //delete contact
             } else if (option == 4) {
+                displayContact(); // display contact
+            } else if (option == 5) {
                 System.out.println("Thank You!!! "); // user quits
                 break;
             } else

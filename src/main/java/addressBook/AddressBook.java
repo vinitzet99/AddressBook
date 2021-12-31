@@ -130,7 +130,7 @@ public class AddressBook {
      */
     public static int menu() {
         System.out.println(
-                "Select an operation: \n1- To add contact to AddressBook \n2- To view AddressBook\n3- To quit");
+                "Select an operation: \n1- To add contact to AddressBook\n2- To edit contact from Address Book\n3- To view AddressBook\n4- To quit");
         return sc.nextInt();
     }
 
@@ -168,6 +168,67 @@ public class AddressBook {
         System.out.println("User Added Successfully!!!");// contact added
     }
 
+    /**
+     * method to edit contact in Address Book
+     * takes first name if Address Book is not empty
+     * show menu to choose which field needs to be change if first name exists
+     * take updated value
+     * Update value
+     */
+    public static void editContact() {
+        if (addressBook.size() > 0) { // check if there is any contact exits
+            String name, updateValue = "";
+            int update = -1, i, flag = 0;
+            System.out.println("Enter first name of person you want to edit: ");
+            name = sc.next(); // first name
+            for (i = 0; i < addressBook.size(); i++) {
+                if (addressBook.get(i).getF_name().equalsIgnoreCase(name)) { // check if name exists
+                    System.out.println(
+                            "Enter field of person you want to edit: \n1. Address \n2. City \n3. State \n4. Zip \n5. Phone Number \n6. Email"); // shows menu
+                    update = sc.nextInt();
+                    System.out.println("Enter new value: ");
+                    updateValue = sc.next();// get new value
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 1) {
+                switch (update) {
+                    case 1:
+                        addressBook.get(i).setAddress(updateValue);
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    case 2:
+                        addressBook.get(i).setCity(updateValue);
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    case 3:
+                        addressBook.get(i).setState(updateValue);
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    case 4:
+                        addressBook.get(i).setZip(Integer.parseInt(updateValue));
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    case 5:
+                        addressBook.get(i).setP_number(Long.parseLong(updateValue));
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    case 6:
+                        addressBook.get(i).setEmail(updateValue);
+                        System.out.println("User Updated Successfully!!!");
+                        break;
+                    default:
+                        System.out.println("Invalid Input!!!.");
+                }
+            } else {
+                System.out.println("Cannot Find First Name!!!");
+            }
+        } else {
+            System.out.println("No Records Present. Please add contact to use this functionality");
+        }
+    }
+
     //main method
     public static void main(String[] args) {
         //welcome message
@@ -180,8 +241,10 @@ public class AddressBook {
             if (option == 1) {
                 addContact(); // add contact
             } else if (option == 2) {
-                displayContact(); // display contact
+                editContact(); // edit contact
             } else if (option == 3) {
+                displayContact(); // display contact
+            } else if (option == 4) {
                 System.out.println("Thank You!!! "); // user quits
                 break;
             } else

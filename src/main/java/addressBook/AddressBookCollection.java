@@ -156,6 +156,28 @@ public class AddressBookCollection {
                 ((key, value) -> System.out.println(key + " " + value + " Total count is: " + value.size())));
     }
 
+
+    /**
+     * Sorts Contacts
+     * input parameter to sort upon Name,City,State,Zip
+     * iterate for each book
+     * call sort method with parameter
+     */
+    public static void sort() {
+        System.out.println("Select option to sort");
+        System.out.println("Select an operation: \n1- by Name");
+        int option = sc.nextInt();
+        switch (option) {
+            case (1):
+                for (AddressBook book : addressBookMap.values()) {
+                    book.sort("name");
+                }
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
+    }
+
     public static void main(String[] args) {
         //welcome message
         System.out.println("Welcome to Address Book Program!!!");

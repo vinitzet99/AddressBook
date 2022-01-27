@@ -262,6 +262,33 @@ public class AddressBook {
         return addressBook.stream().collect(groupingBy(Contact::getState));
     }
 
+
+    /**
+     * Prints sorted contact for each book
+     * take sortBy to check basis of sorting(Name,City,State,Zip)
+     * print current address book
+     * call sorted method to sort and collects list
+     * print list
+     *
+     * @param sortBy
+     */
+    public void sort(String sortBy) {
+        List<Contact> sortContact = new ArrayList<Contact>();
+        System.out.println("\nFor book: " + getName() + "sorted by " + sortBy);
+        switch (sortBy) {
+            case ("name"):
+                sortContact =
+                        addressBook.stream().sorted(Comparator.comparing(Contact::getFirstName))
+                                .collect(Collectors.toList());
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
+        for (Contact contact : sortContact) {
+            System.out.println(contact);
+        }
+    }
+
     //operations method
     public void operations(AddressBook book) {
         //welcome message

@@ -65,6 +65,10 @@ public class AddressBook {
         firstName = sc.next();
         System.out.println("Enter Last Name");
         lastName = sc.next();
+        if (personExist(firstName + lastName)) {
+            System.out.println("User Exists!!!");
+            return;
+        }
         System.out.println("Enter Address");
         address = sc.next();
         System.out.println("Enter City");
@@ -178,6 +182,25 @@ public class AddressBook {
         return name;
     }
 
+    /**
+     * checks if person exists in book
+     * filter contact by combination of first name and last name
+     * finds if contact exits
+     * else return false
+     *
+     * @param searchName
+     * @return
+     */
+    public boolean personExist(String searchName) {
+        Contact filterStream =
+                addressBook.stream()
+                        .filter(contact -> searchName.equals(contact.getFirstName() + contact.getLastName())).findAny()
+                        .orElse(null);
+        if (filterStream == null)
+            return false;
+        else
+            return true;
+    }
 
     //operations method
     public void operations(AddressBook book) {

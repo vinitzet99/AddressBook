@@ -132,7 +132,7 @@ public class AddressBookCollection {
         }
         cityDictionary = dictMap;
         cityDictionary.forEach(
-                ((key, value) -> System.out.println(key + " " + value)));
+                ((key, value) -> System.out.println(key + " " + value + " Total count is: " + value.size())));
     }
 
     /**
@@ -153,7 +153,7 @@ public class AddressBookCollection {
         }
         stateDictionary = dictMap;
         stateDictionary.forEach(
-                ((key, value) -> System.out.println(key + " " + value)));
+                ((key, value) -> System.out.println(key + " " + value + " Total count is: " + value.size())));
     }
 
     public static void main(String[] args) {

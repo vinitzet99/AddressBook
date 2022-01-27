@@ -14,6 +14,8 @@ public class AddressBookCollection {
     //initialize variables
     public static Map<String, AddressBook> addressBookMap = new HashMap<>();
     public static final Scanner sc = new Scanner(System.in);
+    public static Map<String, List<Contact>> cityDictionary = new HashMap<>();
+    public static Map<String, List<Contact>> stateDictionary = new HashMap<>();
 
     /**
      * menu to show Address Book
@@ -25,7 +27,8 @@ public class AddressBookCollection {
     public static int menu() {
         System.out.println(
                 "Select an operation: \n1- To add new AddressBook\n2- To view AddressBooks\n3- To operate on " +
-                        "AddressBooks \\n4-Filter by one City/State \nOther to quit");
+                        "AddressBooks \\n4-Filter by one City/State \\n5- To map by City \\n6- To map by State " +
+                        "\nOther to quit");
         return sc.nextInt();
     }
 
@@ -110,6 +113,49 @@ public class AddressBookCollection {
         }
     }
 
+
+    /**
+     * Map City with Person
+     * calls map method for each book
+     * creates map
+     * assign to cityDictionary
+     * prints cityDictionary
+     */
+    public static void cityDictionaryMap() {
+        Map<String, List<Contact>> dictMap = new HashMap<>();
+        for (AddressBook book : addressBookMap.values()) {
+            book.cityMap().forEach((key, value) -> dictMap.merge(key, value,
+                    (city, contact) -> {
+                        city.addAll(contact);
+                        return city;
+                    }));
+        }
+        cityDictionary = dictMap;
+        cityDictionary.forEach(
+                ((key, value) -> System.out.println(key + " " + value)));
+    }
+
+    /**
+     * Map State with Person
+     * calls map method for each book
+     * creates map
+     * assign to stateDictionary
+     * prints stateDictionary
+     */
+    public static void stateDictionaryMap() {
+        Map<String, List<Contact>> dictMap = new HashMap<>();
+        for (AddressBook book : addressBookMap.values()) {
+            book.stateMap().forEach((key, value) -> dictMap.merge(key, value,
+                    (state, contact) -> {
+                        state.addAll(contact);
+                        return state;
+                    }));
+        }
+        stateDictionary = dictMap;
+        stateDictionary.forEach(
+                ((key, value) -> System.out.println(key + " " + value)));
+    }
+
     public static void main(String[] args) {
         //welcome message
         System.out.println("Welcome to Address Book Program!!!");
@@ -130,6 +176,12 @@ public class AddressBookCollection {
                     break;
                 case (4):
                     searchPerson(); // search Person
+                    break;
+                case (5):
+                    cityDictionaryMap(); // person by City
+                    break;
+                case (6):
+                    stateDictionaryMap(); // person by State
                     break;
                 default:
                     System.out.println("Thanks for using Address Book!!!"); // quit book

@@ -94,7 +94,7 @@ class Contact {
     public String toString() {
         return (" Name: " + this.getFirstName() + " " + this.getLastName() + "\n Address: " + this.getAddress() + " ," +
                 this.getCity() + " ," + this.getState() + " ," + this.getZip() + "\n Contact: " + this.getP_number() +
-                "\n Email: " + this.getEmail());
+                "\n Email: " + this.getEmail()+"\n");
     }
 
 }

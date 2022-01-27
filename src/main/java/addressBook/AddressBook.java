@@ -239,6 +239,28 @@ public class AddressBook {
         }
     }
 
+    /**
+     * Map contacts to city
+     * calls groupingBy method
+     * return mapped contacts to city
+     *
+     * @return
+     */
+    public Map<String, List<Contact>> cityMap() {
+        return addressBook.stream().collect(groupingBy(Contact::getCity));
+    }
+
+
+    /**
+     * Map contacts to state
+     * calls groupingBy method
+     * return mapped contacts to state
+     *
+     * @return
+     */
+    public Map<String, List<Contact>> stateMap() {
+        return addressBook.stream().collect(groupingBy(Contact::getState));
+    }
 
     //operations method
     public void operations(AddressBook book) {

@@ -27,8 +27,8 @@ public class AddressBookCollection {
     public static int menu() {
         System.out.println(
                 "Select an operation: \n1- To add new AddressBook\n2- To view AddressBooks\n3- To operate on " +
-                        "AddressBooks \\n4-Filter by one City/State \\n5- To map by City \\n6- To map by State " +
-                        "\nOther to quit");
+                        "AddressBooks\n4-Filter by one City/State \n5- To map by City \n6- To map by State \n7- To " +
+                        "sort \nOther to quit");
         return sc.nextInt();
     }
 
@@ -80,7 +80,6 @@ public class AddressBookCollection {
         }
     }
 
-
     /**
      * search persons by city or state
      * takes input search on City or State
@@ -113,7 +112,6 @@ public class AddressBookCollection {
         }
     }
 
-
     /**
      * Map City with Person
      * calls map method for each book
@@ -131,8 +129,7 @@ public class AddressBookCollection {
                     }));
         }
         cityDictionary = dictMap;
-        cityDictionary.forEach(
-                ((key, value) -> System.out.println(key + " " + value + " Total count is: " + value.size())));
+        cityDictionary.forEach(((key, value) -> System.out.println(key + " " + value+"Total Count: "+value.size())));
     }
 
     /**
@@ -152,10 +149,8 @@ public class AddressBookCollection {
                     }));
         }
         stateDictionary = dictMap;
-        stateDictionary.forEach(
-                ((key, value) -> System.out.println(key + " " + value + " Total count is: " + value.size())));
+        stateDictionary.forEach(((key, value) -> System.out.println(key + " " + value+" Total count is: "+value.size())));
     }
-
 
     /**
      * Sorts Contacts
@@ -165,12 +160,27 @@ public class AddressBookCollection {
      */
     public static void sort() {
         System.out.println("Select option to sort");
-        System.out.println("Select an operation: \n1- by Name");
+        System.out.println("Select an operation: \n1- by Name\n2- by City\n3- by State \n4- by Zip");
         int option = sc.nextInt();
         switch (option) {
             case (1):
                 for (AddressBook book : addressBookMap.values()) {
                     book.sort("name");
+                }
+                break;
+            case (2):
+                for (AddressBook book : addressBookMap.values()) {
+                    book.sort("city");
+                }
+                break;
+            case (3):
+                for (AddressBook book : addressBookMap.values()) {
+                    book.sort("state");
+                }
+                break;
+            case (4):
+                for (AddressBook book : addressBookMap.values()) {
+                    book.sort("zip");
                 }
                 break;
             default:
@@ -204,6 +214,9 @@ public class AddressBookCollection {
                     break;
                 case (6):
                     stateDictionaryMap(); // person by State
+                    break;
+                case (7):
+                    sort();// sort by person name
                     break;
                 default:
                     System.out.println("Thanks for using Address Book!!!"); // quit book

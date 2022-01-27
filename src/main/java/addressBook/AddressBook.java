@@ -202,7 +202,6 @@ public class AddressBook {
             return true;
     }
 
-
     /**
      * Search person by city
      * takes city
@@ -262,7 +261,6 @@ public class AddressBook {
         return addressBook.stream().collect(groupingBy(Contact::getState));
     }
 
-
     /**
      * Prints sorted contact for each book
      * take sortBy to check basis of sorting(Name,City,State,Zip)
@@ -281,8 +279,20 @@ public class AddressBook {
                         addressBook.stream().sorted(Comparator.comparing(Contact::getFirstName))
                                 .collect(Collectors.toList());
                 break;
-            default:
-                System.out.println("Invalid Input");
+            case ("city"):
+                sortContact =
+                        addressBook.stream().sorted(Comparator.comparing(Contact::getCity))
+                                .collect(Collectors.toList());
+                break;
+            case ("state"):
+                sortContact =
+                        addressBook.stream().sorted(Comparator.comparing(Contact::getState))
+                                .collect(Collectors.toList());
+                break;
+            case ("zip"):
+                sortContact =
+                        addressBook.stream().sorted(Comparator.comparing(Contact::getZip)).collect(Collectors.toList());
+                break;
         }
         for (Contact contact : sortContact) {
             System.out.println(contact);

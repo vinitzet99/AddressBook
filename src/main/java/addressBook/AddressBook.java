@@ -5,115 +5,29 @@
  */
 package addressBook;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
-//Contact
-class Contact {
-    //instance variable declaration
-    private String f_name, l_name, address, city, state, email;
-    private int zip;
-    long p_number;
-
-    //constructor
-    Contact(String f_name, String l_name, String address, String city, String state, int zip, long p_number,
-            String email) {
-        this.f_name = f_name;
-        this.l_name = l_name;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.p_number = p_number;
-        this.email = email;
-
-    }
-
-    //getters and setters
-    public String getF_name() {
-        return f_name;
-    }
-
-    public String getL_name() {
-        return l_name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setF_name(String f_name) {
-        this.f_name = f_name;
-    }
-
-    public void setL_name(String l_name) {
-        this.l_name = l_name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setZip(int zip) {
-        this.zip = zip;
-    }
-
-    public void setP_number(long p_number) {
-        this.p_number = p_number;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getZip() {
-        return zip;
-    }
-
-    public long getP_number() {
-        return p_number;
-    }
-
-    public String toString() {
-        return (" Name: " + this.getF_name() + " " + this.getL_name() + "\n Address: " + this.getAddress() + " ," +
-                this.getCity() + " ," + this.getState() + " ," + this.getZip() + "\n Contact: " + this.getP_number() +
-                "\n Email: " + this.getEmail());
-    }
-
-}
-
+import static java.util.stream.Collectors.groupingBy;
 
 public class AddressBook {
     //instance variable declaration
-    public static ArrayList<Contact> addressBook = new ArrayList<Contact>();
-    public static final Scanner sc = new Scanner(System.in);
+    private ArrayList<Contact> addressBook;
+    private String name;
+    private final Scanner sc = new Scanner(System.in);
+
+    //constructor
+    AddressBook(String name) {
+        this.addressBook = new ArrayList<Contact>();
+        this.name = name;
+    }
 
     /**
      * method to print address book
      * iterate through book if there is any contact
      * print contact
      */
-    public static void displayContact() {
+    public void displayContact() {
         if (addressBook.size() > 0) {
             for (int i = 0; i < addressBook.size(); i++) {
                 System.out.println();
@@ -128,9 +42,10 @@ public class AddressBook {
      * method displays menu
      * return option chosen by user
      */
-    public static int menu() {
+    public int menu() {
         System.out.println(
-                "Select an operation: \n1- To add contact to AddressBook\n2- To edit contact from Address Book\n3- To delete contact from AddressBook\n4- To view AddressBook\n5- To quit");
+                "Select an operation: \n1- To add contact to AddressBook\n2- To edit contact from Address Book\n3- To" +
+                        " delete contact from AddressBook\n4- To view AddressBook\n5- To return");
         return sc.nextInt();
     }
 
@@ -140,16 +55,16 @@ public class AddressBook {
      * create contact
      * add contact to Address Book
      */
-    public static void addContact() {
+    public void addContact() {
         //variable declaration
-        String f_name, l_name, address, city, state, email;
+        String firstName, lastName, address, city, state, email;
         int zip;
         long p_number;
         //input
         System.out.println("Enter First Name");
-        f_name = sc.next();
+        firstName = sc.next();
         System.out.println("Enter Last Name");
-        l_name = sc.next();
+        lastName = sc.next();
         System.out.println("Enter Address");
         address = sc.next();
         System.out.println("Enter City");
@@ -162,7 +77,7 @@ public class AddressBook {
         email = sc.next();
         System.out.println("Enter Phone Number");
         p_number = sc.nextLong();
-        Contact contact = new Contact(f_name, l_name, address, city, state, zip, p_number, email);
+        Contact contact = new Contact(firstName, lastName, address, city, state, zip, p_number, email);
         System.out.println("Contact created!!!"); //contact created
         addressBook.add(contact);
         System.out.println("User Added Successfully!!!");// contact added
@@ -175,16 +90,17 @@ public class AddressBook {
      * take updated value
      * Update value
      */
-    public static void editContact() {
+    public void editContact() {
         if (addressBook.size() > 0) { // check if there is any contact exits
             String name, updateValue = "";
             int update = -1, i, flag = 0;
             System.out.println("Enter first name of person you want to edit: ");
             name = sc.next(); // first name
             for (i = 0; i < addressBook.size(); i++) {
-                if (addressBook.get(i).getF_name().equalsIgnoreCase(name)) { // check if name exists
+                if (addressBook.get(i).getFirstName().equalsIgnoreCase(name)) { // check if name exists
                     System.out.println(
-                            "Enter field of person you want to edit: \n1. Address \n2. City \n3. State \n4. Zip \n5. Phone Number \n6. Email"); // shows menu
+                            "Enter field of person you want to edit: \n1. Address \n2. City \n3. State \n4. Zip \n5. " +
+                                    "Phone Number \n6. Email"); // shows menu
                     update = sc.nextInt();
                     System.out.println("Enter new value: ");
                     updateValue = sc.next();// get new value
@@ -235,14 +151,14 @@ public class AddressBook {
      * search First Name
      * delete contact if exists
      */
-    public static void delContact() {
+    public void delContact() {
         if (addressBook.size() > 0) { // if Address Book is not Empty
             String name;
             int i, flag = 0;
             System.out.println("Enter first name of person you want to delete: ");
             name = sc.next(); // input name to delete
             for (i = 0; i < addressBook.size(); i++) {
-                if (addressBook.get(i).getF_name().equalsIgnoreCase(name)) {
+                if (addressBook.get(i).getFirstName().equalsIgnoreCase(name)) {
                     flag = 1;
                     addressBook.remove(i); // delete contact
                     System.out.println("User Deleted Successfully!!!");
@@ -256,26 +172,33 @@ public class AddressBook {
             System.out.println("No Records Present. Please add contact to use this functionality");
         }
     }
-    //main method
-    public static void main(String[] args) {
+
+    //book name getter
+    public String getName() {
+        return name;
+    }
+
+
+    //operations method
+    public void operations(AddressBook book) {
         //welcome message
-        System.out.println("Welcome to Address Book Program!!!");
+        System.out.println("Welcome to Address Book Program!!! " + getName());
         //initialize variable
         int option;
         //functionality
         while (true) {
             option = menu(); // display menu
             if (option == 1) {
-                addContact(); // add contact
+                book.addContact(); // add contact
             } else if (option == 2) {
-                editContact(); // edit contact
+                book.editContact(); // edit contact
             } else if (option == 3) {
-                delContact(); //delete contact
+                book.delContact(); //delete contact
             } else if (option == 4) {
-                displayContact(); // display contact
+                book.displayContact(); // display contact
             } else if (option == 5) {
-                System.out.println("Thank You!!! "); // user quits
-                break;
+                System.out.println("Closed Book " + getName()); // user quits
+                return;
             } else
                 System.out.println("Invalid Input. Please enter a valid Input!!!! "); // invalid input
         }

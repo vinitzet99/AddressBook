@@ -5,6 +5,9 @@
  */
 package addressBook;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,6 +18,7 @@ public class AddressBook {
     private ArrayList<Contact> addressBook;
     private String name;
     private final Scanner sc = new Scanner(System.in);
+    public static String address_fileName = "address-book.txt";
 
     //constructor
     AddressBook(String name) {
@@ -35,6 +39,32 @@ public class AddressBook {
             }
         } else {
             System.out.println("No Records Present.");
+        }
+        System.out.println("Read from File");
+        try {
+            Files.lines(new File("address-book.txt").toPath())
+                    .forEach(System.out::println);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * writes addressBook to file
+     * create String buffer
+     * iterate through book for string buffer
+     * write in file
+     */
+    public void writeIntoFile() {
+        StringBuffer addressBookFile = new StringBuffer();
+        addressBook.forEach(contact1 -> {
+            String addressData = contact1.toString().concat("\n");
+            addressBookFile.append(addressData);
+        });
+        try {
+            Files.write(Paths.get(address_fileName), addressBookFile.toString().getBytes()); //Read File
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -85,6 +115,7 @@ public class AddressBook {
         System.out.println("Contact created!!!"); //contact created
         addressBook.add(contact);
         System.out.println("User Added Successfully!!!");// contact added
+        writeIntoFile();
     }
 
     /**
@@ -147,6 +178,7 @@ public class AddressBook {
         } else {
             System.out.println("No Records Present. Please add contact to use this functionality");
         }
+        writeIntoFile();
     }
 
     /**
@@ -175,6 +207,7 @@ public class AddressBook {
         } else {
             System.out.println("No Records Present. Please add contact to use this functionality");
         }
+        writeIntoFile();
     }
 
     //book name getter
@@ -305,6 +338,7 @@ public class AddressBook {
         System.out.println("Welcome to Address Book Program!!! " + getName());
         //initialize variable
         int option;
+        writeIntoFile();
         //functionality
         while (true) {
             option = menu(); // display menu

@@ -5,6 +5,14 @@
  */
 package addressBook;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -15,6 +23,9 @@ public class AddressBook {
     private ArrayList<Contact> addressBook;
     private String name;
     private final Scanner sc = new Scanner(System.in);
+    public static String address_fileName = "O:\\Bridge\\JAVA\\AddressBook\\resources\\address-book.txt";
+    public static String address_fileNameCSV="O:\\Bridge\\JAVA\\AddressBook\\resources\\address-bookcsv.csv";
+
 
     //constructor
     AddressBook(String name) {
@@ -35,6 +46,59 @@ public class AddressBook {
             }
         } else {
             System.out.println("No Records Present.");
+        }
+        System.out.println("Read from CSV");
+        try {
+            FileReader filereader = new FileReader(address_fileNameCSV);
+            CSVReader csvReader = new CSVReader(filereader);
+            String[] nextRecord;
+
+            while ((nextRecord = csvReader.readNext()) != null) {
+                for (String cell : nextRecord) {
+                    System.out.print(cell + "\t");
+                }
+                System.out.println();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * writes addressBook to file
+     * create String buffer
+     * iterate through book for string buffer
+     * write in file
+     */
+    public void writeIntoFile() {
+        StringBuffer addressBookFile = new StringBuffer();
+        addressBook.forEach(contact1 -> {
+            String addressData = contact1.toString().concat("\n");
+            addressBookFile.append(addressData);
+        });
+        try {
+            Files.write(Paths.get(address_fileName), addressBookFile.toString().getBytes()); //Read File
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * write to csv
+     * open csv
+     * split data into array
+     * write
+     * @param csv
+     */
+    public void writeIntoFileSCV(String csv) {
+        try {
+            CSVWriter writer = new CSVWriter(new FileWriter(address_fileNameCSV,true));
+            String[] dataArray=csv.split("#");
+            writer.writeNext(dataArray);
+            writer.close();
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 
@@ -85,6 +149,9 @@ public class AddressBook {
         System.out.println("Contact created!!!"); //contact created
         addressBook.add(contact);
         System.out.println("User Added Successfully!!!");// contact added
+        writeIntoFile();
+        String csv=firstName+"#"+lastName+"#"+address+"#"+city+"#"+state+"#"+zip+"#"+p_number+"#"+email;
+        writeIntoFileSCV(csv);
     }
 
     /**
@@ -147,6 +214,7 @@ public class AddressBook {
         } else {
             System.out.println("No Records Present. Please add contact to use this functionality");
         }
+        writeIntoFile();
     }
 
     /**
@@ -175,6 +243,7 @@ public class AddressBook {
         } else {
             System.out.println("No Records Present. Please add contact to use this functionality");
         }
+        writeIntoFile();
     }
 
     //book name getter
@@ -305,6 +374,7 @@ public class AddressBook {
         System.out.println("Welcome to Address Book Program!!! " + getName());
         //initialize variable
         int option;
+        writeIntoFile();
         //functionality
         while (true) {
             option = menu(); // display menu

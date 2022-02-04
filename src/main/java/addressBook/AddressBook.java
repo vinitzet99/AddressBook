@@ -7,6 +7,9 @@ package addressBook;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -25,6 +28,8 @@ public class AddressBook {
     private final Scanner sc = new Scanner(System.in);
     public static String address_fileName = "O:\\Bridge\\JAVA\\AddressBook\\resources\\address-book.txt";
     public static String address_fileNameCSV="O:\\Bridge\\JAVA\\AddressBook\\resources\\address-bookcsv.csv";
+    public static String address_fileNameJSON="O:\\Bridge\\JAVA\\AddressBook\\resources\\address-bookjson.json";
+
 
 
     //constructor
@@ -47,18 +52,19 @@ public class AddressBook {
         } else {
             System.out.println("No Records Present.");
         }
-        System.out.println("Read from CSV");
+        System.out.println("Read from JSON");
         try {
-            FileReader filereader = new FileReader(address_fileNameCSV);
-            CSVReader csvReader = new CSVReader(filereader);
-            String[] nextRecord;
-
-            while ((nextRecord = csvReader.readNext()) != null) {
-                for (String cell : nextRecord) {
-                    System.out.print(cell + "\t");
-                }
-                System.out.println();
-            }
+            JSONParser p = new JSONParser();
+            Object ob=p.parse(new FileReader(address_fileNameJSON));
+            JSONObject obj=(JSONObject)ob;
+            System.out.println("First Name: "+ (String) obj.get("First Name"));
+            System.out.println("Last Name: "+(String) obj.get("Last Name"));
+            System.out.println("Address: "+(String) obj.get("Address"));
+            System.out.println("City: "+(String) obj.get("City"));
+            System.out.println("State: "+(String) obj.get("State"));
+            System.out.println("Zip: "+(String) obj.get("Zip"));
+            System.out.println("Phone: "+(String) obj.get("Phone number"));
+            System.out.println("Email: "+(String) obj.get("Email"));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +108,26 @@ public class AddressBook {
         }
     }
 
+    public void writeIntoFileJSON(String json){
+        try {
+            String[] dataArray = json.split("#");
+            JSONObject js=new JSONObject();
+            js.put("First Name",dataArray[0]);
+            js.put("Last Name",dataArray[1]);
+            js.put("Address",dataArray[2]);
+            js.put("City",dataArray[3]);
+            js.put("State",dataArray[4]);
+            js.put("Zip",dataArray[5]);
+            js.put("Phone number",dataArray[6]);
+            js.put("Email",dataArray[7]);
+            FileWriter file=new FileWriter(address_fileNameJSON);
+            file.write(js.toString());
+            System.out.println("Written Successfully.");
+            file.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
     /**
      * method displays menu
      * return option chosen by user
@@ -150,8 +176,9 @@ public class AddressBook {
         addressBook.add(contact);
         System.out.println("User Added Successfully!!!");// contact added
         writeIntoFile();
-        String csv=firstName+"#"+lastName+"#"+address+"#"+city+"#"+state+"#"+zip+"#"+p_number+"#"+email;
-        writeIntoFileSCV(csv);
+        String data=firstName+"#"+lastName+"#"+address+"#"+city+"#"+state+"#"+zip+"#"+p_number+"#"+email;
+        writeIntoFileSCV(data);
+        writeIntoFileJSON(data);
     }
 
     /**
